@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const mainRouter = require('./index'); // Use the index.js file as the main router
+const mainRouter = require('./routes'); // Use the index.js file as the main router
 const apiKeyAuth = require('./middleware/apiKey');
 
 dotenv.config();
