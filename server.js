@@ -16,3 +16,5 @@ app.use(cors());
 // The base path for all your API endpoints will be /api
 app.use(apiKeyAuth); // Apply API key authentication middleware
 app.use('/api', mainRouter);
+
+module.exports = app;
