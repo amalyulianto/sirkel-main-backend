@@ -8,6 +8,7 @@ const crypto = require('crypto'); // Built-in Node.js module
 exports.registerUser = async (req, res) => {
   const { username, email, password, name } = req.body;
   try {
+    await connectToDatabase();
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = new User({ username, email, password: hashedPassword, name });
@@ -22,6 +23,7 @@ exports.registerUser = async (req, res) => {
 exports.userSignIn = async (req, res) => {
   const { username, password } = req.body;
   try {
+    await connectToDatabase();
     const user = await User.findOne({ username });
     if (!user) return res.status(400).json({ error: 'Invalid credentials.' });
 

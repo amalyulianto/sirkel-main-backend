@@ -27,6 +27,7 @@ exports.createLeaderboard = async (req, res) => {
     }
 
     try {
+        await connectToDatabase();
         const newLeaderboard = new Leaderboard({
             name,
             gameType,
@@ -73,8 +74,8 @@ exports.createLeaderboard = async (req, res) => {
 };
 exports.getLeaderboardDetails = async (req, res) => {
     try {
+        await connectToDatabase();
         const { leaderboardId } = req.params;
-
         const leaderboard = await Leaderboard.findById(leaderboardId)
             .populate({
                 path: 'players',
@@ -104,6 +105,7 @@ exports.addEditor = async (req, res) => {
     const authenticatedUserId = req.user._id;
 
     try {
+        await connectToDatabase();
         const leaderboard = await Leaderboard.findById(leaderboardId);
         if (!leaderboard) {
             return res.status(404).json({ error: 'Leaderboard not found.' });
@@ -143,6 +145,7 @@ exports.removeEditor = async (req, res) => {
     const authenticatedUserId = req.user._id;
 
     try {
+        await connectToDatabase();
         const leaderboard = await Leaderboard.findById(leaderboardId);
 
         if (!leaderboard) {
@@ -177,6 +180,8 @@ exports.removeEditor = async (req, res) => {
 // Get all leaderboards
 exports.getAllLeaderboards = async (req, res) => {
     try {
+        
+        await connectToDatabase();
         const authenticatedUserId = req.user._id;
 
         const leaderboards = await Leaderboard.find({
@@ -209,6 +214,7 @@ exports.deleteLeaderboard = async (req, res) => {
     const authenticatedUserId = req.user._id;
 
     try {
+        await connectToDatabase();
         const leaderboard = await Leaderboard.findById(leaderboardId);
 
         if (!leaderboard) {
@@ -233,6 +239,7 @@ exports.deleteLeaderboard = async (req, res) => {
 // Add player to leaderboard
 exports.addPlayerToLeaderboard = async (req, res) => {
     try {
+        await connectToDatabase();
         const { leaderboardId } = req.params;
         const { name } = req.body;
 
@@ -287,7 +294,8 @@ exports.addPlayerToLeaderboard = async (req, res) => {
 // Rename player on leaderboard
 exports.renamePlayerOnLeaderboard = async (req, res) => {
 	try {
-		const { leaderboardId, playerId } = req.params;
+		await connectToDatabase();
+        const { leaderboardId, playerId } = req.params;
 		const { name } = req.body;
 
 		if (!name || !name.trim()) {
@@ -356,6 +364,7 @@ exports.renamePlayerOnLeaderboard = async (req, res) => {
 // Remove player from leaderboard
 exports.removePlayerFromLeaderboard = async (req, res) => {
     try {
+        await connectToDatabase();
         const { leaderboardId, playerId } = req.params;
 
         const updatedLeaderboard = await Leaderboard.findByIdAndUpdate(
@@ -377,6 +386,7 @@ exports.removePlayerFromLeaderboard = async (req, res) => {
 // Edit leaderboard name
 exports.editLeaderboardName = async (req, res) => {
     try {
+        await connectToDatabase();
         const { leaderboardId } = req.params;
         const { name } = req.body;
         const authenticatedUserId = req.user._id; // Get the authenticated user's ID
@@ -404,3 +414,4 @@ exports.editLeaderboardName = async (req, res) => {
         res.status(500).json({ error: 'Failed to edit leaderboard name.' });
     }
 };
+

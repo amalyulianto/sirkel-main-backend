@@ -16,6 +16,7 @@ exports.submitFootballGame = async (req, res) => {
     }
 
     try {
+        await connectToDatabase();
         // Support players as array of ids or array of names
         const normalizePlayers = async () => {
             const isIdLike = (v) => typeof v === 'string' && /^[a-fA-F0-9]{24}$/.test(v);
@@ -161,6 +162,7 @@ exports.submitFootballGame = async (req, res) => {
 exports.getFootballRanking = async (req, res) => {
     const { leaderboardId } = req.params;
     try {
+        await connectToDatabase();
         const ranking = await Stats.find({
             leaderboardId: leaderboardId,
         })
@@ -182,6 +184,7 @@ exports.getFootballRanking = async (req, res) => {
 exports.getFootballGameHistory = async (req, res) => {
     const { leaderboardId } = req.params;
     try {
+        await connectToDatabase();
         const games = await Game.find({ leaderboardId: leaderboardId, gameType: 'football' })
             .sort({ createdAt: -1 })
             .populate({ path: 'winnerId', select: 'name' })
@@ -223,6 +226,7 @@ exports.getFootballGameHistory = async (req, res) => {
 exports.getFootballPlayerStats = async (req, res) => {
     const { playerId, leaderboardId } = req.params;
     try {
+        await connectToDatabase();
         const player = await Player.findOne({ _id: playerId, leaderboard: leaderboardId });
         if (!player) {
             return res.status(404).json({ error: 'Player not found on this leaderboard.' });

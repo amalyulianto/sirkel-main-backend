@@ -15,6 +15,7 @@ exports.submitCardGame = async (req, res) => {
     }
 
     try {
+        await connectToDatabase();
         const Player = require('../models/Player');
         const isIdLike = v => typeof v === 'string' && /^[a-fA-F0-9]{24}$/.test(v);
 
@@ -108,6 +109,7 @@ exports.submitCardGame = async (req, res) => {
 exports.getCardGameRanking = async (req, res) => {
     const { leaderboardId } = req.params;
     try {
+        await connectToDatabase();
         const ranking = await Stats.find({ leaderboardId: leaderboardId, 'cardGames.gamesPlayed': { $gt: 0 } })
             .sort({
                 'cardGames.totalPoints': -1,
@@ -126,6 +128,7 @@ exports.getCardGameRanking = async (req, res) => {
 exports.getCardGameHistory = async (req, res) => {
     const { leaderboardId } = req.params;
     try {
+        await connectToDatabase();
         const games = await Game.find({ leaderboardId, gameType: 'card-games' })
             .sort({ createdAt: -1 })
             .populate('winnerId', 'name')
@@ -168,6 +171,7 @@ exports.getCardGameHistory = async (req, res) => {
 exports.getCardGamesPlayerStats = async (req, res) => {
     const { playerId, leaderboardId } = req.params;
     try {
+        await connectToDatabase();
         const stats = await Stats.findOne({ playerId, leaderboardId })
             .select('cardGames')
             .populate('playerId', 'name');

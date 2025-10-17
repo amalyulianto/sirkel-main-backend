@@ -21,6 +21,7 @@ exports.submitBadmintonGame = async (req, res) => {
     }
 
     try {
+        await connectToDatabase();
         const Player = require('../models/Player');
         const isIdLike = v => typeof v === 'string' && /^[a-fA-F0-9]{24}$/.test(v);
 
@@ -107,6 +108,7 @@ exports.submitBadmintonGame = async (req, res) => {
 exports.getBadmintonRanking = async (req, res) => {
     const { leaderboardId } = req.params;
     try {
+        await connectToDatabase();
         const ranking = await Stats.find({ leaderboardId: leaderboardId, 'badminton.overallGamesPlayed': { $gt: 0 } })
             .sort({
                 'badminton.overallGamesWon': -1, 'badminton.overallWinPercentage': -1,
@@ -124,6 +126,7 @@ exports.getBadmintonRanking = async (req, res) => {
 exports.getBadmintonGameHistory = async (req, res) => {
     const { leaderboardId } = req.params;
     try {
+        await connectToDatabase();
         const games = await Game.find({ leaderboardId: leaderboardId, gameType: 'badminton' })
             .sort({ createdAt: -1 })
             .populate('players.playerId', 'name')
@@ -152,7 +155,9 @@ exports.getBadmintonGameHistory = async (req, res) => {
 // Get a Player's Badminton stats
 exports.getBadmintonPlayerStats = async (req, res) => {
     const { playerId, leaderboardId } = req.params;
+
     try {
+        await connectToDatabase();
         const stats = await Stats.findOne({ playerId, leaderboardId })
             .select('badminton')
             .populate('playerId', 'name');
