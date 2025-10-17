@@ -1,30 +1,18 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mainRouter = require('./index'); // Use the index.js file as the main router
-const connectToDatabase = require('./utils/db');
 const apiKeyAuth = require('./middleware/apiKey');
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
 // Use the main router to handle all API routes
 // The base path for all your API endpoints will be /api
 app.use(apiKeyAuth); // Apply API key authentication middleware
 app.use('/api', mainRouter);
-
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running on port ${PORT}`);
-});

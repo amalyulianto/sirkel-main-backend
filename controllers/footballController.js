@@ -3,6 +3,7 @@ const Stats = require('../models/Stats');
 const FootballGame = require('../models/FootballGame');
 const Player = require('../models/Player');
 const User = require('../models/User');
+const connectToDatabase = require('../utils/db');
 
 // --- Football Specific Controllers ---
 // Submit Football Game

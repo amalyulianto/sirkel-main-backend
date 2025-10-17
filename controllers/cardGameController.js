@@ -1,6 +1,7 @@
 const Game = require('../models/Game');
 const Stats = require('../models/Stats');
 const CardGame = require('../models/CardGame');
+const connectToDatabase = require('../utils/db');
 
 // --- Card Game Specific Controllers ---
 // Submit Card Game Results

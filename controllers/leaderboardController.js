@@ -5,6 +5,7 @@ const Leaderboard = require('../models/Leaderboard');
 const User = require('../models/User');
 const Player = require('../models/Player');
 const Stats = require('../models/Stats');
+const connectToDatabase = require('../utils/db');
 
 // --- Leaderboard Management Controllers ---
 // Create leaderboard

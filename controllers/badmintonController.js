@@ -1,6 +1,7 @@
 const Game = require('../models/Game');
 const Stats = require('../models/Stats');
 const BadmintonGame = require('../models/BadmintonGame');
+const connectToDatabase = require('../utils/db');
 
 
 // --- Badminton Specific Controllers ---

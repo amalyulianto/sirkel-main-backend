@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto'); // Built-in Node.js module
+const connectToDatabase = require('../utils/db');
 
 // Register user
 exports.registerUser = async (req, res) => {
